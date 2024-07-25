@@ -17,13 +17,21 @@ function findBed()
     return chosenbed
 end
 
+local tp = false
+
 function bedTP()
+    tp = true
     game.Players.LocalPlayer.Character.Humanoid.Health = 0
-    repeat task.wait() until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-    local bed = findBed()
-    if bed ~= nil then
-        game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0.96, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {CFrame = bed.CFrame + Vector3.new(0, 8, 0)}):Play()
-    end
+    game.Players.LocalPlayer.CharacterAdded:Connect(function()
+        if tp then 
+            repeat task.wait() until game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            local bed = findBed()
+            if bed ~= nil then
+                game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0.96, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {CFrame = bed.CFrame + Vector3.new(0, 8, 0)}):Play()
+            end
+            tp = false
+        end
+    end)
 end
 
 bedTP()
